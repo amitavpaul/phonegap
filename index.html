@@ -1,159 +1,25 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-        <meta name="viewport" content="height=device-height,width=device-width,initial-scale=1.0,maximum-scale=1.0" >
-        
-        <!-- <link rel="stylesheet" type="text/css" href="css/index.css" /> -->
-        <!-- <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.2.min.css" /> -->
-        <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css" />
-        <link rel="stylesheet" type="text/css" href="css/card.css" />
-        <script type="text/javascript" src="js/jquery.min.js"></script>
-        <script type="text/javascript" src="js/jquery.mobile-1.3.2.min.js"></script>
-        
-        
+  <head>
+    <title>Storage Example</title>
 
-        <title>Supply Source</title>
-    </head>
-    <body>
-        <!--
-        <style>
-          .ui-page { background: #16a085;}
-        </style>
-        -->
+    <script type="text/javascript" charset="utf-8" src="cordova-2.0.0.js"></script>
+    <script type="text/javascript" charset="utf-8">
 
-        <!-- Home screen -->
-        <div data-role="page">
+    // Wait for Cordova to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
 
-            <div data-role="panel" id="panel" data-position="right" data-theme="c" data-display="push"></div>
+    // Cordova is ready
+    //
+    function onDeviceReady() {
+        var db = window.openDatabase("test", "1.0", "Test DB", 1000000);
+    }
 
-            <div data-role="header">
-              <a data-iconpos="notext" data-role="button" data-icon="home" title="Home">Home</a>
-              <h1>Supply Source</h1>
-              <a data-iconpos="notext" href="#panel" data-role="button" data-icon="flat-menu"></a>
-            </div>
-  
-
-            <script type="text/javascript">
-                // apiRequest("salad", 50000, false, false, false, false, false, false, false, false, false);
-                //apiCall();
-            </script>
-
-            <p><button class="topcoat-button" onclick="apiRequest('salad', 50000, false, false, false, false, false, false, false, false, false)">API</button></p>
-
-
-            <div data-role="content">
-                
-                <ul class="now">
-                  
-                  <li><div class="card">
-                    <p class="card-title">Trader Joe's Organic Chicken</p>
-                    <p><img src="http://appelfellerarts.com/wp-content/uploads/2012/07/TJ_bsb.jpg" class="full" /></p>
-                    <p>25g Protein </p>
-                    </div>
-                  </li>
-
-                  <li><div class="card">
-                    <p class="card-title">New Card Style</p>
-                    <p>This is a description and below is a url in the card.</p>
-                    <p class="url"><a href="http://www.google.com/landing/now/">See the page</a></p>
-                  </div></li>
-
-                  <li><div class="card">
-                    <p class="card-title">Cards Are Repeatable</p>
-                    <p>We can have as many of these on a page as we like.</p>
-                  </div></li>
-                
-                  <li><div class="card">
-                    <p class="card-title">Scan Test</p>
-                
-                    <p id="barcode">Waiting for scan...</p>
-                    <p><button class="topcoat-button" onclick="barcodeScanner()">Scan Now</button></p>
-                  </div></li>
-
-                  <div id="barcode"></div>
-                </ul>
-    
-            </div>
-        </div>
-
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="barcodescanner.js"></script>
-        <script type="text/javascript">            
-
-
-            function serverRequest(recordID){
-                //alert('asdf');
-                $.ajax({
-                    url: 'http://dry-bayou-7910.herokuapp.com/renderjson/' + recordID + '?callback=jsoncallback',
-                    //url: 'localhost:3000/renderjson',
-                    type: "GET",
-                    dataType: 'jsonp',
-                    
-                    timeout: 5000,
-                    success: function(data){
-
-                        alert(data.name + " | " + data.growth_conditions)
-
-                    },
-                    error: function(){
-                        console.log('There was an error loading the data.');
-                    }
-                });
-            }
-
-            function barcodeScanner(){
-                // Temporarily disabiling alert test since scanner is working
-                // alert("clicked");
-                var scanner = cordova.require("cordova/plugin/BarcodeScanner");
-
-                scanner.scan(
-                    function (result) {
-
-                        scanResult = result.text;
-                        alert(scanResult);
-
-                        serverRequest(scanResult);
-
-
-                    }, 
-                    function (error) {
-                        alert("Scanning failed: " + error);
-                    }
-                );
-            }
-
-            var appid = "64ba9eac";
-            var appkey = "fdb2032513e161995ee9a20b03a33104";
-
-            function apiCall(){
-                alert('asdf');
-            }
-
-            function apiRequest(phrase, cal_max, allergen_contains_milk, allergen_contains_eggs, allergen_contains_fish, allergen_contains_shellfish, allergen_contains_tree_nuts, allergen_contains_peanuts, allergen_contains_wheat, allergen_contains_soybeans, allergen_contains_gluten){
-
-                    var apiURL = 'https://api.nutritionix.com/v1_1/search/' + phrase + '?results=0%3A20&cal_min=0&cal_max=' + cal_max + '&fields=*&allergen_contains_milk=' + allergen_contains_milk + '&allergen_contains_eggs=' + allergen_contains_eggs + '&allergen_contains_fish=' + allergen_contains_fish + '&allergen_contains_shellfish=' + allergen_contains_shellfish + '&allergen_contains_tree_nuts=' + allergen_contains_tree_nuts + '&allergen_contains_peanuts=' + allergen_contains_peanuts + '&allergen_contains_wheat=' + allergen_contains_wheat + '&allergen_contains_soybeans=' + allergen_contains_soybeans + '&allergen_contains_gluten=' + allergen_contains_gluten + '&appId=64ba9eac&appKey=fdb2032513e161995ee9a20b03a33104';
-
-                        alert(apiURL);
-
-                    $.ajax({
-                        url: apiURL,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data){
-                            return data;
-                        }
-                    });
-                
-
-            }
-
-
-
-
-        </script> 
-
-    </body>
+    </script>
+  </head>
+  <body>
+    <h1>Example</h1>
+    <p>Open Database</p>
+  </body>
 </html>
